@@ -7,7 +7,7 @@ This repository contains three independent modules for the **Cursor AI Course**.
 | Module | Folder | Description | Status |
 |--------|--------|-------------|--------|
 | **Module 6** | [`Module-6-AI-Frontend-Development/`](Module-6-AI-Frontend-Development/) | Hands-On Lab: AI for Frontend Development | ✅ Complete |
-| **Module 7** | [`Module-7-AI-Backend-Development/`](Module-7-AI-Backend-Development/) | Hands-On Lab: AI for Backend Development | 🚧 In progress |
+| **Module 7** | [`Module-7-AI-Backend-Development/`](Module-7-AI-Backend-Development/) | Hands-On Lab: AI for Backend Development |   ✅ Complete |
 | **Module 8** | [`Module-8-AI-QA-DevOps/`](Module-8-AI-QA-DevOps/) | Hands-On Lab: AI for QA & DevOps | ✅ Complete |
 
 ---
