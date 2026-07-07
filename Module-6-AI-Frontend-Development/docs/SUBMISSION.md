@@ -1,12 +1,13 @@
-# Course Submission — TaskFlow Collaboration App
+# Module 6 Submission — TaskFlow Collaboration App
 
-**Student project for Cursor AI Course**
+**Hands-On Lab: AI for Frontend Development**
 
 ## Quick Links for Professor
 
 | Deliverable | Location |
 |-------------|----------|
-| Setup instructions | [README.md](../README.md) |
+| Module overview | [README.md](../README.md) |
+| Repository root | [../../README.md](../../README.md) |
 | Application screenshots | [docs/screenshots/](screenshots/) |
 | Playwright test report (Markdown) | [docs/test-report/TEST_REPORT.md](test-report/TEST_REPORT.md) |
 | Playwright test report (HTML) | [docs/test-report/html/index.html](test-report/html/index.html) |
@@ -15,6 +16,7 @@
 ## Verify the Project
 
 ```bash
+cd Module-6-AI-Frontend-Development
 npm install
 npx playwright install chromium
 npm run build          # Should complete without errors
