@@ -7,7 +7,7 @@ This repository contains three independent modules for the **Cursor AI Course**.
 | Module | Folder | Description | Status |
 |--------|--------|-------------|--------|
 | **Module 6** | [`Module-6-AI-Frontend-Development/`](Module-6-AI-Frontend-Development/) | Hands-On Lab: AI for Frontend Development | ✅ Complete |
-| **Module 7** | [`Module-7-AI-Backend-Development/`](Module-7-AI-Backend-Development/) | Hands-On Lab: AI for Backend Development |   ✅ Complete |
+| **Module 7** | [`Module-7-AI-Backend-Development/`](Module-7-AI-Backend-Development/) | Hands-On Lab: AI for Backend Development | ✅ Complete |
 | **Module 8** | [`Module-8-AI-QA-DevOps/`](Module-8-AI-QA-DevOps/) | Hands-On Lab: AI for QA & DevOps | ✅ Complete |
 
 ---
@@ -34,14 +34,20 @@ npm run dev
 
 ## Module 7: AI for Backend Development
 
-Backend API and server-side logic built with AI assistance. All new backend code for this module lives in this folder.
+Flask REST API for customer support ticket management: JWT auth, ticket workflow, comments, attachments, and role-based access control.
 
 ```bash
 cd Module-7-AI-Backend-Development
-# Setup instructions will be added as development begins
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+bash scripts/verify-build.sh   # 28 tests, 90% coverage
+python run.py                  # http://localhost:5000/api/docs
 ```
 
-📄 [Module 7 README →](Module-7-AI-Backend-Development/README.md)
+📄 [Module 7 README →](Module-7-AI-Backend-Development/README.md)  
+📄 [Course submission guide →](Module-7-AI-Backend-Development/docs/SUBMISSION.md)  
+📄 [Architecture diagram →](Module-7-AI-Backend-Development/docs/ARCHITECTURE.md)  
+📄 [AI prompts used →](Module-7-AI-Backend-Development/docs/AI_PROMPTS.md)
 
 ---
 
@@ -76,7 +82,10 @@ bash qa/run-all-checks.sh
 │   ├── docs/
 │   ├── package.json
 │   └── README.md
-├── Module-7-AI-Backend-Development/       ← Backend lab (new code)
+├── Module-7-AI-Backend-Development/       ← Backend lab (Flask API)
+│   ├── app/
+│   ├── tests/
+│   ├── docs/
 │   └── README.md
 └── Module-8-AI-QA-DevOps/                 ← QA & DevOps lab
     └── README.md

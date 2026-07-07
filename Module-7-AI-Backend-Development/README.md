@@ -1,30 +1,55 @@
 # Module 7: Customer Support Ticket System API
 
-Flask REST API implementing PRD core ticket management (FR-001–FR-015): ticket creation, assignment, status workflow, comments, attachments, and role-based access control.
+Flask REST API implementing customer support ticket management (FR-001–FR-015): ticket creation, assignment, status workflow, comments, attachments, and role-based access control.
+
+## Status
+
+✅ **Complete** — 28 tests passing, 90% coverage, CI-integrated, Docker-ready.
+
+| Deliverable | Link |
+|-------------|------|
+| Course submission | [docs/SUBMISSION.md](docs/SUBMISSION.md) |
+| Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
+| AI prompts | [docs/AI_PROMPTS.md](docs/AI_PROMPTS.md) |
 
 ## Tech Stack
 
-Flask 3 · SQLAlchemy · Marshmallow · Flask-JWT-Extended · flask-smorest (Swagger UI) · bcrypt · bleach
+Flask 3 · SQLAlchemy · Marshmallow · Flask-JWT-Extended · flask-smorest (Swagger UI) · bcrypt · bleach · pytest
 
 ## Quick Start
 
 ```bash
 cd Module-7-AI-Backend-Development
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
 
 export FLASK_APP=run.py
-flask db init          # first time only
-flask db migrate -m "Support ticket system"
-flask db upgrade
-
-flask run
+python run.py
 ```
 
 - **Swagger UI:** http://localhost:5000/api/docs
 - **Health:** http://localhost:5000/health
+
+Tables are created automatically on startup (`db.create_all()`).
+
+### Verify build (CI simulation)
+
+```bash
+bash scripts/verify-build.sh
+```
+
+## Docker
+
+```bash
+docker build -t ticket-api .
+docker run -p 5000:5000 \
+  -e SECRET_KEY=your-secret-key-min-32-chars \
+  -e JWT_SECRET_KEY=your-jwt-secret-min-32-chars \
+  ticket-api
+curl http://localhost:5000/health
+```
 
 ## API Endpoints
 
@@ -60,7 +85,7 @@ flask run
 ## Security
 
 - bcrypt password hashing (cost factor 12)
-- JWT authentication on all endpoints except `/api/auth/register`
+- JWT authentication on all endpoints except `/api/auth/register` and `/api/auth/login`
 - Rate limiting: 100 requests/minute
 - Input sanitization (bleach) and server-side validation
 - File upload type/size validation
@@ -68,10 +93,16 @@ flask run
 ## Testing
 
 ```bash
-pytest --cov=app --cov-report=term-missing
+export SECRET_KEY=ci-secret-key-minimum-32-characters-long
+export JWT_SECRET_KEY=ci-jwt-secret-key-minimum-32-chars
+pytest -n auto --dist loadgroup --cov=app --cov-report=term-missing
 ```
 
-Coverage threshold: 85% (current: ~90%).
+| Metric | Value |
+|--------|-------|
+| Tests | 28 |
+| Coverage | ~90% |
+| CI gate | 85% minimum |
 
 ## User Roles
 
@@ -80,3 +111,40 @@ Coverage threshold: 85% (current: ~90%).
 | Customer | Create/view own tickets, add public comments, reopen closed tickets |
 | Agent | View assigned + unassigned queue, update status, add comments |
 | Admin | Full access, assign tickets, delete tickets |
+
+## Project Structure
+
+```
+Module-7-AI-Backend-Development/
+├── README.md
+├── requirements.txt
+├── run.py
+├── Dockerfile
+├── docker-entrypoint.sh
+├── app/
+│   ├── models/
+│   ├── schemas/
+│   ├── resources/       # API routes (auth, tickets, agents)
+│   ├── services/
+│   └── utils/
+├── tests/
+│   ├── conftest.py
+│   ├── test_auth.py
+│   ├── test_tickets.py
+│   └── test_utils.py
+├── scripts/
+│   └── verify-build.sh
+└── docs/
+    ├── SUBMISSION.md
+    ├── ARCHITECTURE.md
+    └── AI_PROMPTS.md
+```
+
+## Related Modules
+
+| Module | Integration |
+|--------|-------------|
+| Module 6 | Frontend consumes auth API |
+| Module 8 | CI/CD pipeline, QA tests, performance gates |
+
+← [Back to course overview](../README.md)

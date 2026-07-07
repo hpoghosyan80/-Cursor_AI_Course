@@ -33,6 +33,9 @@ def create_app(config_class: type[Config] = Config) -> Flask:
     _register_blueprints()
     _register_routes(app)
 
+    with app.app_context():
+        db.create_all()
+
     return app
 
 

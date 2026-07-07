@@ -52,3 +52,9 @@ class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     RATELIMIT_ENABLED = False
+    SECRET_KEY = os.environ.get(
+        "SECRET_KEY", "test-secret-key-for-ci-minimum-32-chars!!"
+    )
+    JWT_SECRET_KEY = os.environ.get(
+        "JWT_SECRET_KEY", "test-jwt-secret-key-for-ci-32chars!!"
+    )
