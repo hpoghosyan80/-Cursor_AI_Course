@@ -1,38 +1,82 @@
-# Module 7: Hands-On Lab — AI for Backend Development
+# Module 7: Customer Support Ticket System API
 
-This folder contains all code for **Module 7** of the Cursor AI Course. Backend API, server logic, and database integration will be built here using AI-assisted development.
+Flask REST API implementing PRD core ticket management (FR-001–FR-015): ticket creation, assignment, status workflow, comments, attachments, and role-based access control.
 
-## Status
+## Tech Stack
 
-🚧 **In progress** — Development starts here.
+Flask 3 · SQLAlchemy · Marshmallow · Flask-JWT-Extended · flask-smorest (Swagger UI) · bcrypt · bleach
 
-## Planned Scope
-
-- REST or GraphQL API server
-- Authentication & authorization
-- Database models and migrations
-- Integration with the Module 6 frontend (TaskFlow app)
-- API documentation
-
-## Getting Started
-
-Setup instructions will be added as the backend project is initialized.
+## Quick Start
 
 ```bash
-# From repository root
 cd Module-7-AI-Backend-Development
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
 
-# Commands will be added here (e.g. npm install, npm run dev)
+export FLASK_APP=run.py
+flask db init          # first time only
+flask db migrate -m "Support ticket system"
+flask db upgrade
+
+flask run
 ```
 
-## Related Modules
+- **Swagger UI:** http://localhost:5000/api/docs
+- **Health:** http://localhost:5000/health
 
-| Module | Folder | Description |
-|--------|--------|-------------|
-| Module 6 | [Module-6-AI-Frontend-Development](../Module-6-AI-Frontend-Development/) | Frontend React app |
-| Module 7 | **This folder** | Backend development |
-| Module 8 | [Module-8-AI-QA-DevOps](../Module-8-AI-QA-DevOps/) | QA & DevOps |
+## API Endpoints
 
-## Repository Root
+### Authentication
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/api/auth/register` | No | Register customer account |
+| POST | `/api/auth/login` | No | Get JWT token (24h expiry) |
+| POST | `/api/auth/logout` | Bearer | Revoke token |
+| GET | `/api/auth/me` | Bearer | Current user profile |
 
-← [Back to course overview](../README.md)
+### Tickets
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/api/tickets` | Bearer | List tickets (role-filtered) |
+| POST | `/api/tickets` | Bearer | Create ticket (FR-001–004) |
+| GET | `/api/tickets/:id` | Bearer | Get ticket details |
+| PUT | `/api/tickets/:id` | Bearer | Update subject/description |
+| DELETE | `/api/tickets/:id` | Admin | Delete ticket |
+| PUT | `/api/tickets/:id/status` | Bearer | Update status (FR-011–014) |
+| POST | `/api/tickets/:id/assign` | Admin | Assign / auto-assign (FR-005–010) |
+| GET/POST | `/api/tickets/:id/comments` | Bearer | Comments (FR-015) |
+| GET | `/api/tickets/:id/history` | Bearer | Audit history (FR-013) |
+| POST | `/api/tickets/:id/attachments` | Bearer | Upload attachment (FR-001) |
+
+### Agents
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/api/agents` | Bearer | List agents |
+| GET | `/api/agents/:id/tickets` | Bearer | Agent's assigned tickets |
+| PUT | `/api/agents/:id/availability` | Agent/Admin | Update availability |
+
+## Security
+
+- bcrypt password hashing (cost factor 12)
+- JWT authentication on all endpoints except `/api/auth/register`
+- Rate limiting: 100 requests/minute
+- Input sanitization (bleach) and server-side validation
+- File upload type/size validation
+
+## Testing
+
+```bash
+pytest --cov=app --cov-report=term-missing
+```
+
+Coverage threshold: 85% (current: ~90%).
+
+## User Roles
+
+| Role | Permissions |
+|------|-------------|
+| Customer | Create/view own tickets, add public comments, reopen closed tickets |
+| Agent | View assigned + unassigned queue, update status, add comments |
+| Admin | Full access, assign tickets, delete tickets |
