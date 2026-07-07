@@ -1,0 +1,6 @@
+qa/reports/
+qa/reports/playwright-html/
+node_modules/
+package-lock.json
+.performance-report.json
+performance-report.json

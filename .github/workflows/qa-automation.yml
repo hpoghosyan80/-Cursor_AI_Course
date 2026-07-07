@@ -1,0 +1,161 @@
+name: QA Automation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Module-6-AI-Frontend-Development/**'
+      - 'Module-7-AI-Backend-Development/**'
+      - 'Module-8-AI-QA-DevOps/**'
+      - '.github/workflows/qa-automation.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Module-6-AI-Frontend-Development/**'
+      - 'Module-7-AI-Backend-Development/**'
+      - 'Module-8-AI-QA-DevOps/**'
+      - '.github/workflows/qa-automation.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa-automation:
+    name: Full QA Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            Module-8-AI-QA-DevOps/requirements-qa.txt
+            Module-7-AI-Backend-Development/requirements.txt
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: Module-8-AI-QA-DevOps/package.json
+
+      - name: Install Python dependencies
+        working-directory: Module-8-AI-QA-DevOps
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements-qa.txt
+          pip install -r ../Module-7-AI-Backend-Development/requirements.txt
+
+      - name: Install Node QA dependencies
+        working-directory: Module-8-AI-QA-DevOps
+        run: |
+          npm install
+          npx playwright install chromium --with-deps
+
+      - name: Install frontend dependencies
+        working-directory: Module-6-AI-Frontend-Development
+        run: npm ci
+
+      - name: Run Playwright POM E2E
+        working-directory: Module-8-AI-QA-DevOps
+        run: bash qa/scripts/run-e2e-pom.sh
+
+      - name: Start backend for performance/security scans
+        working-directory: Module-7-AI-Backend-Development
+        run: |
+          source ../Module-8-AI-QA-DevOps/venv/bin/activate
+          export FLASK_ENV=testing
+          python run.py &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:5000/health && break
+            sleep 2
+          done
+
+      - name: Build frontend for Lighthouse
+        working-directory: Module-6-AI-Frontend-Development
+        run: |
+          npm ci
+          npm run build
+          npx vite preview --port 5173 --host &
+          for i in $(seq 1 20); do
+            curl -sf http://localhost:5173 && break
+            sleep 2
+          done
+
+      - name: Run pytest + Pylint
+        working-directory: Module-8-AI-QA-DevOps
+        run: |
+          source venv/bin/activate
+          bash qa/scripts/run-pytest.sh
+          bash qa/scripts/run-pylint.sh
+
+      - name: Run Jest + ESLint
+        working-directory: Module-8-AI-QA-DevOps
+        run: bash qa/scripts/run-jest-eslint.sh
+
+      - name: Run Snyk
+        working-directory: Module-8-AI-QA-DevOps
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: bash qa/scripts/run-snyk.sh
+        continue-on-error: true
+
+      - name: Run OWASP ZAP
+        working-directory: Module-8-AI-QA-DevOps
+        env:
+          ZAP_TARGET: http://host.docker.internal:5000
+        run: bash qa/scripts/run-zap.sh
+        continue-on-error: true
+
+      - name: Run Lighthouse
+        working-directory: Module-8-AI-QA-DevOps
+        env:
+          LIGHTHOUSE_URL: http://localhost:5173
+        run: bash qa/scripts/run-lighthouse.sh
+        continue-on-error: true
+
+      - name: Run k6
+        working-directory: Module-8-AI-QA-DevOps
+        env:
+          K6_BASE_URL: http://localhost:5000
+        run: bash qa/scripts/run-k6.sh
+        continue-on-error: true
+
+      - name: Generate dashboard and recommendations
+        working-directory: Module-8-AI-QA-DevOps
+        run: |
+          source venv/bin/activate
+          python qa/scripts/generate_dashboard.py
+          python qa/scripts/generate_recommendations.py
+          python qa/scripts/generate_report.py
+
+      - name: Upload QA reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-reports
+          path: |
+            Module-8-AI-QA-DevOps/qa/reports/
+          retention-days: 14
+
+      - name: Fail on critical test failures
+        working-directory: Module-8-AI-QA-DevOps
+        run: |
+          source venv/bin/activate
+          python -c "
+          import json, sys
+          s = json.load(open('qa/reports/qa-summary.json'))
+          testing = s.get('categories', {}).get('testing', {})
+          for k, v in testing.items():
+              if v.get('status') == 'fail':
+                  print(f'FAIL: {k}')
+                  sys.exit(1)
+          print('All executed tests passed')
+          "

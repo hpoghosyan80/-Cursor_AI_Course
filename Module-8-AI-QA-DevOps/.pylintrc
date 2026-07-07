@@ -1,0 +1,16 @@
+[MAIN]
+jobs=1
+
+[MESSAGES CONTROL]
+disable=missing-module-docstring,missing-class-docstring,missing-function-docstring,too-few-public-methods
+
+[FORMAT]
+max-line-length=100
+
+[DESIGN]
+max-args=8
+max-locals=20
+
+[MASTER]
+ignore=venv,.venv,node_modules
+init-hook='import sys; sys.path.append(".")'

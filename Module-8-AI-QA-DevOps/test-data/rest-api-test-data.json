@@ -1,0 +1,107 @@
+{
+  "users": {
+    "admin": {
+      "name": "Admin User",
+      "email": "admin@api.test",
+      "password": "AdminPass1",
+      "role": "admin"
+    },
+    "customer": {
+      "name": "Customer One",
+      "email": "customer@api.test",
+      "password": "Customer1",
+      "role": "customer"
+    },
+    "customerTwo": {
+      "name": "Customer Two",
+      "email": "customer2@api.test",
+      "password": "Customer2",
+      "role": "customer"
+    }
+  },
+  "invalidUsers": {
+    "missingEmail": {
+      "name": "No Email",
+      "password": "ValidPass1"
+    },
+    "invalidEmail": {
+      "name": "Bad Email",
+      "email": "not-email",
+      "password": "ValidPass1"
+    },
+    "shortName": {
+      "name": "A",
+      "email": "short@api.test",
+      "password": "ValidPass1"
+    }
+  },
+  "products": {
+    "valid": {
+      "name": "Wireless Mouse",
+      "description": "Ergonomic wireless mouse",
+      "price": 29.99,
+      "stock": 100,
+      "category": "electronics"
+    },
+    "validTwo": {
+      "name": "USB-C Cable",
+      "description": "2m braided cable",
+      "price": 12.99,
+      "stock": 250,
+      "category": "accessories"
+    },
+    "invalid": {
+      "missingName": {
+        "price": 10.0,
+        "stock": 5
+      },
+      "negativePrice": {
+        "name": "Bad Product",
+        "price": -5.0,
+        "stock": 10
+      },
+      "negativeStock": {
+        "name": "Bad Stock",
+        "price": 9.99,
+        "stock": -1
+      }
+    }
+  },
+  "orders": {
+    "valid": {
+      "items": [
+        { "product_id": "PROD-001", "quantity": 2 }
+      ]
+    },
+    "emptyItems": {
+      "items": []
+    },
+    "invalidProduct": {
+      "items": [
+        { "product_id": "INVALID", "quantity": 1 }
+      ]
+    },
+    "invalidQuantity": {
+      "items": [
+        { "product_id": "PROD-001", "quantity": 0 }
+      ]
+    }
+  },
+  "auth": {
+    "wrongPassword": {
+      "email": "customer@api.test",
+      "password": "WrongPass1"
+    },
+    "nonExistentUser": {
+      "email": "nobody@api.test",
+      "password": "Customer1"
+    }
+  },
+  "security": {
+    "sqlInjection": "'; DROP TABLE users; --",
+    "xssName": "<script>alert(1)</script>"
+  },
+  "performance": {
+    "maxResponseMs": 500
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "validUsers": {
+    "newCustomer": {
+      "name": "Jane Doe",
+      "email": "jane.doe@example.com",
+      "password": "SecurePass1",
+      "bio": "Software engineer and open-source contributor.",
+      "avatar_url": "https://cdn.example.com/avatars/jane.png",
+      "notification_email": true,
+      "notification_push": false
+    },
+    "existingCustomer": {
+      "name": "John Smith",
+      "email": "john.smith@example.com",
+      "password": "MyPassw0rd!"
+    },
+    "agentUser": {
+      "name": "Support Agent",
+      "email": "agent@support.example.com",
+      "password": "AgentPass1",
+      "role": "agent"
+    },
+    "adminUser": {
+      "name": "System Admin",
+      "email": "admin@example.com",
+      "password": "AdminPass1!",
+      "role": "admin"
+    }
+  },
+  "invalidRegistration": {
+    "missingName": {
+      "email": "noname@example.com",
+      "password": "ValidPass1"
+    },
+    "shortName": {
+      "name": "A",
+      "email": "short@example.com",
+      "password": "ValidPass1"
+    },
+    "longName": {
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "email": "longname@example.com",
+      "password": "ValidPass1"
+    },
+    "invalidEmail": {
+      "name": "Bad Email",
+      "email": "not-an-email",
+      "password": "ValidPass1"
+    },
+    "shortPassword": {
+      "name": "Short Pass",
+      "email": "shortpass@example.com",
+      "password": "Ab1"
+    },
+    "weakPasswordNoUpper": {
+      "name": "Weak Pass",
+      "email": "weak1@example.com",
+      "password": "lowercase1"
+    },
+    "weakPasswordNoLower": {
+      "name": "Weak Pass",
+      "email": "weak2@example.com",
+      "password": "UPPERCASE1"
+    },
+    "weakPasswordNoDigit": {
+      "name": "Weak Pass",
+      "email": "weak3@example.com",
+      "password": "NoDigitsHere"
+    },
+    "roleEscalation": {
+      "name": "Hacker",
+      "email": "hacker@example.com",
+      "password": "HackerPass1",
+      "role": "admin"
+    },
+    "sqlInjectionEmail": {
+      "name": "SQL Test",
+      "email": "'; DROP TABLE users; --@example.com",
+      "password": "ValidPass1"
+    },
+    "xssInName": {
+      "name": "<script>alert('xss')</script>",
+      "email": "xss@example.com",
+      "password": "ValidPass1"
+    }
+  },
+  "profileUpdates": {
+    "validPartial": {
+      "name": "Jane D. Updated",
+      "bio": "Updated bio with new interests."
+    },
+    "validEmailChange": {
+      "email": "jane.updated@example.com"
+    },
+    "validPreferences": {
+      "notification_email": false,
+      "notification_push": true
+    },
+    "invalidBioTooLong": {
+      "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Extra padding to exceed five hundred characters limit for bio field validation testing purposes only."
+    },
+    "invalidAvatarUrl": {
+      "avatar_url": "not-a-valid-url"
+    },
+    "httpAvatarUrl": {
+      "avatar_url": "http://insecure.example.com/avatar.png"
+    },
+    "roleEscalationAttempt": {
+      "role": "admin"
+    },
+    "emptyName": {
+      "name": ""
+    }
+  },
+  "passwordChange": {
+    "valid": {
+      "current_password": "SecurePass1",
+      "new_password": "NewSecure2",
+      "confirm_password": "NewSecure2"
+    },
+    "wrongCurrent": {
+      "current_password": "WrongPass1",
+      "new_password": "NewSecure2",
+      "confirm_password": "NewSecure2"
+    },
+    "mismatchedConfirm": {
+      "current_password": "SecurePass1",
+      "new_password": "NewSecure2",
+      "confirm_password": "DifferentPass3"
+    },
+    "sameAsCurrent": {
+      "current_password": "SecurePass1",
+      "new_password": "SecurePass1",
+      "confirm_password": "SecurePass1"
+    },
+    "weakNewPassword": {
+      "current_password": "SecurePass1",
+      "new_password": "weak",
+      "confirm_password": "weak"
+    },
+    "commonPassword": {
+      "current_password": "SecurePass1",
+      "new_password": "Password123",
+      "confirm_password": "Password123"
+    }
+  },
+  "accountDeletion": {
+    "valid": {
+      "password": "SecurePass1",
+      "confirmation": "DELETE"
+    },
+    "wrongPassword": {
+      "password": "WrongPass1",
+      "confirmation": "DELETE"
+    },
+    "missingConfirmation": {
+      "password": "SecurePass1"
+    },
+    "wrongConfirmationText": {
+      "password": "SecurePass1",
+      "confirmation": "delete"
+    }
+  },
+  "edgeCases": {
+    "unicodeName": {
+      "name": "田中太郎",
+      "email": "unicode@example.com",
+      "password": "Unicode1!"
+    },
+    "emojiName": {
+      "name": "User 🎉 Test",
+      "email": "emoji@example.com",
+      "password": "EmojiPass1"
+    },
+    "emailCaseVariation": {
+      "name": "Case Test",
+      "email": "CASE.TEST@EXAMPLE.COM",
+      "password": "CasePass1"
+    },
+    "emailWithPlus": {
+      "name": "Plus Address",
+      "email": "user+tag@example.com",
+      "password": "PlusPass1"
+    },
+    "whitespacePaddedName": {
+      "name": "  Padded Name  ",
+      "email": "padded@example.com",
+      "password": "PaddedPass1"
+    },
+    "maxLengthBio": {
+      "bio": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "boundaryPassword8Chars": {
+      "name": "Boundary User",
+      "email": "boundary@example.com",
+      "password": "Abcdef1!"
+    }
+  },
+  "securityPayloads": {
+    "jwtTampered": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5OTk5OTk5IiwiZXhwIjo5OTk5OTk5OTk5fQ.invalid",
+    "pathTraversalAvatar": {
+      "avatar_url": "https://cdn.example.com/../../../etc/passwd"
+    },
+    "ssrfInternalUrl": {
+      "avatar_url": "https://169.254.169.254/latest/meta-data/"
+    },
+    "idorUserId": 99999,
+    "bruteForcePasswords": [
+      "password",
+      "12345678",
+      "qwerty123",
+      "admin123",
+      "letmein1"
+    ]
+  },
+  "tokens": {
+    "expiredTokenPlaceholder": "Bearer <expired-jwt-token>",
+    "revokedTokenPlaceholder": "Bearer <revoked-after-logout-token>",
+    "missingBearerPrefix": "<valid-jwt-without-bearer-prefix>"
+  }
+}

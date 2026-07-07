@@ -8,7 +8,7 @@ This repository contains three independent modules for the **Cursor AI Course**.
 |--------|--------|-------------|--------|
 | **Module 6** | [`Module-6-AI-Frontend-Development/`](Module-6-AI-Frontend-Development/) | Hands-On Lab: AI for Frontend Development | ✅ Complete |
 | **Module 7** | [`Module-7-AI-Backend-Development/`](Module-7-AI-Backend-Development/) | Hands-On Lab: AI for Backend Development | 🚧 In progress |
-| **Module 8** | [`Module-8-AI-QA-DevOps/`](Module-8-AI-QA-DevOps/) | Hands-On Lab: AI for QA & DevOps | 📋 Upcoming |
+| **Module 8** | [`Module-8-AI-QA-DevOps/`](Module-8-AI-QA-DevOps/) | Hands-On Lab: AI for QA & DevOps | ✅ Complete |
 
 ---
 
@@ -47,14 +47,21 @@ cd Module-7-AI-Backend-Development
 
 ## Module 8: AI for QA & DevOps
 
-Testing pipelines, CI/CD configuration, and DevOps automation built with AI assistance.
+Testing pipelines, CI/CD configuration, QA automation (Page Object Model, quality dashboard), and DevOps automation built with AI assistance.
 
 ```bash
 cd Module-8-AI-QA-DevOps
-# Setup instructions will be added as development begins
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements-qa.txt
+npm install && npx playwright install chromium
+bash qa/run-all-checks.sh
 ```
 
-📄 [Module 8 README →](Module-8-AI-QA-DevOps/README.md)
+📄 [Module 8 README →](Module-8-AI-QA-DevOps/README.md)  
+📄 [Course submission guide →](Module-8-AI-QA-DevOps/docs/SUBMISSION.md)  
+📄 [Architecture diagram →](Module-8-AI-QA-DevOps/docs/ARCHITECTURE.md)  
+📄 [Test coverage report →](Module-8-AI-QA-DevOps/docs/test-coverage/COVERAGE_REPORT.md)  
+📄 [AI prompts used →](Module-8-AI-QA-DevOps/docs/AI_PROMPTS.md)
 
 ---
 

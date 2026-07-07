@@ -1,0 +1,24 @@
+{
+  "project": "Cursor AI Course",
+  "modules": {
+    "frontend": "../Module-6-AI-Frontend-Development",
+    "backend": "../Module-7-AI-Backend-Development",
+    "qa": "."
+  },
+  "thresholds": {
+    "lighthouse_performance": 80,
+    "lighthouse_accessibility": 90,
+    "k6_p95_ms": 500,
+    "k6_error_rate": 0.01,
+    "pylint_score": 8.0,
+    "eslint_max_errors": 0,
+    "pytest_min_pass_rate": 1.0,
+    "jest_min_pass_rate": 1.0
+  },
+  "urls": {
+    "frontend_dev": "http://localhost:5173",
+    "backend_health": "http://localhost:5000/health",
+    "rest_api_products": "http://localhost:5000/api/products"
+  },
+  "reports_dir": "qa/reports"
+}
